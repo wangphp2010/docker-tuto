@@ -12,7 +12,7 @@ https://hijiangtao.github.io/2018/04/17/Docker-in-Action/
 
 ## 安装
 
-```
+```bash
 
 # 安装
 $ wget -qO- https://get.docker.com/ | sh
@@ -33,7 +33,7 @@ $ docker run hello-world
 
 
 
-```
+```bash
 # 拉取 镜像 这些镜像是官方的
 # Docker 镜像仓库地址若不写则默认为 Docker Hub，而仓库名是两段式名称，即 <用户名>/<软件名>。对于 Docker Hub，如果不给出用户名，则默认为 library，也就是官方镜像
 $ docker pull ubuntu 
@@ -44,7 +44,7 @@ $ docker image ls
 
 
  
-```
+```bash
 # 运行 镜像 
 $ docker run -it --rm   ubuntu:16.04  bash
 ```
@@ -66,7 +66,7 @@ $ docker run -it --rm   ubuntu:16.04  bash
 
 
 
-```
+```bash
 # 删除镜像 
 $ docker image rm -f [image ID] 
 
@@ -76,7 +76,7 @@ $ docker image rm -f [image ID]
 
 ## 通过 commit 命令理解镜像构成
 
-```
+```bash
  
 # nginx 镜像启动一个容器，命名为 webserver，并映射在 4000 端口 浏览器去访问它
 # 如果是虚拟机 将 localhost 换为虚拟机地址 http://192.168.0.40:4000/
@@ -94,7 +94,7 @@ $ docker diff webserver
 ## 假设以上操作已经符合我们的定制了，接下来就将它保存下来。commit 语法格式如下
 ### docker commit [选项] <容器ID或容器名> [<仓库名>[:<标签>]]
 
-```
+```bash
 $ docker commit \
     --author "Joe Jiang <hijiangtao@gmail.com>" \
     --message "modify: Nginx default page to Hello Docker" \
@@ -112,7 +112,9 @@ nginx               latest              b175e7467d66        6 days ago          
 
 ```
 ## 查看这个镜像最新版的历史记录
-```
+
+```bash
+
 $ docker history nginx:v2
 
 # 输出
@@ -122,7 +124,8 @@ b175e7467d66        6 days ago          /bin/sh -c #(nop)  CMD ["nginx" "-g" "da
 <missing>           6 days ago          /bin/sh -c #(nop)  STOPSIGNAL [SIGTERM]         0B
 ...
 ``` 
-```
+
+```bash
 # 查看所有容器
 $ docker container ls -a
 CONTAINER ID        IMAGE               COMMAND                  CREATED             STATUS                   PORTS                  NAMES
@@ -145,7 +148,8 @@ $ docker run --name web2 -d -p 4001:80 nginx:v2
 ```
 
 ## -d 参数的解释
-```
+
+```bash
 $ docker run ubuntu:16.04 /bin/sh -c "while true; do echo hello world; sleep 1; done"
 
 # 输出
@@ -157,7 +161,7 @@ hello world
 
 > -d Run container in background and print container ID
 
-```
+```bash
 # 如果我们在如上命令中加入 -d 命令，那么这些 hello world 信息就需要通过如下命令来查看了，其中 ID 是容器的名称：
 $ docker logs ID
 
@@ -207,7 +211,7 @@ CMD ["python", "app.py"]
 
 > RUN 的正确写法: 否则每行RUN 都会增加一层镜像 导致系统浪费甚至崩溃
 
-```
+```bash
 RUN buildDeps='gcc libc6-dev make' \
     && apt-get update \
     && apt-get install -y $buildDeps \
@@ -224,13 +228,13 @@ RUN buildDeps='gcc libc6-dev make' \
 
 requirements.txt 内容如下：
 
-```
+```bash
 Flask
 Redis
 ```
 app.py 内容如下：
 
-```
+```bash
 from flask import Flask
 from redis import Redis, RedisError
 import os
@@ -259,7 +263,7 @@ if __name__ == "__main__":
 
 ### 构建这个镜像
 
-```
+```bash
 # docker build [选项] <上下文路径/URL/->
 # docker build 得知这个路径后，会将路径下的所有内容打包，然后上传给 Docker 引擎
 
@@ -275,7 +279,7 @@ $ http://192.168.0.40:4000/
 
 ## 发布这个镜像到 Docker Hub
 
-```
+```bash
 # tag 格式
 docker tag image username/repository:tag
 
@@ -286,7 +290,7 @@ docker tag friendlyhello wang2010/friendlyhello:v1
 > 接着将它发布：
 
 
-```
+```bash
 # push 格式
 docker push username/repository:tag
 
